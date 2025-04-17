@@ -1,0 +1,25 @@
+The first major problem I encountered had to do with the prompt engineering. 
+It took several attempts as the LLM wouldn't generate appropriate code (IE, creating it's own dataset), 
+not producing code that answered the given question, and giving code that wouldn't run or was incredibly innaccurate. 
+Solving the first part of this problem was fairly easy, as I could just direct the LLM to use "df" as the preloaded dataset.
+The second part took changing wording, directing to certain python libraries, or other kind of random changes to see what works. 
+This part I can speak to the least as it was mostly just trying things and seeing what worked. 
+The third part I actually just gave up on at one point. Directing an LLM to produce EXACTLY what you want every single time
+is incredibly difficult. Thankfully this currently just manifests in "useless" graphs where the LLMM graphs a category
+that really doesn't need to be graphed. These are pretty easy to ignore but is a main limitation of my project. Additionally,
+I did find that the LLM was almost always generating appropriate regression models when it did decide to make them. This
+was pretty surprising to me, especially given I didn't prompt specifically for it. 
+
+The second major problem I ran into was the display of graphs on the streamlit dashboard. This I managed to solve by updating the 
+code running segment of the code to ensure everything displayed smoothly. Credit to Evan for helping me with that problem. 
+
+The third major problem that I never even solved was being able to handle unclean datasets. For example, datasets with empty 
+cells in rows, weird characters, or other issues that the LLM code can't handle. Unfortunatey this is another major limitation
+of this project. Despite attempting some fixes using NumPy versus Pandas, writing code to handle specific cases, and more there
+isn't an easy way to solve this problem. I think the potentially best solution would be to run an LLM call to data manage
+the dataset before generating code, but this runs into the issue of being able to pass all the possible issues to the LLM
+so that it can appropriately data manage. 
+
+Overall, there wasn't too much that I ended up having to deal with, but I can certainly see how expanding this project
+into a larger scale application would require immense work to handle all the issues I didn't tackle. Consistency, generality,
+and accuracy are problems that I feel will be a constant battle through the development of applications like this.
