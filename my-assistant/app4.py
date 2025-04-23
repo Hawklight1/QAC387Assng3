@@ -17,7 +17,7 @@ from langchain_openai import ChatOpenAI
 
 # Load environment variables from .env file
 load_dotenv()
-openai_api_key = os.getenv("OPENAI_API_KEY")
+openai_api_key2 = os.getenv("OPENAI_API_KEY2")
 
 # Title
 st.title("AI-Powered Data Analysis Assistant")
@@ -33,23 +33,23 @@ You are a Python data analysis assistant. A user has uploaded the following data
 
 {data_sample}
 
-The user hypothesizes: "{question}" 
+User input: "{question}" 
 
-Please determine the most visual representation, explain the method, and generate Python code using the uploaded dataset, which is already loaded in a variable called 'df'.
+Please determine the most visual appropriate representation, explain the method, and generate Python code using the uploaded dataset, which is already loaded in a variable called 'df'.
 
-Please generate graphs only using matplotlib. Include both univariate and multivariate graphs. After the code for these graphs, please also include a statistical test or regression analysis to determine how significant the relationship you are visualizing is.
+Please generate graphs. Include both univariate and multivariate graphs. After the code for these graphs, please also include a statistical test or regression analysis to determine how significant the relationship you are visualizing is.
 Use print() to output a short description for the user to interpret the results of the tests as well.
 #
 
 
 """
 prompt = PromptTemplate(input_variables=["data_sample", "question"], template=template)
-llm = ChatOpenAI(model="gpt-4o-mini", temperature=0)
+llm = ChatOpenAI(model="gpt-4o-mini", temperature=0, api_key=openai_api_key2)
 llm_chain = prompt | llm
 
 # Main logic
 if uploaded_file:
-    df = pd.read_csv(uploaded_file)
+    df = pd.read_csv(uploaded_file, encoding='ISO-8859-1', header=0, on_bad_lines='warn')
 
     # Fix Arrow serialization issues
     for col in df.select_dtypes(include=["object"]).columns:
@@ -68,7 +68,7 @@ if uploaded_file:
     if st.checkbox("Show summary statistics"):
         st.write(df.describe(include="all"))
     
-
+    
     if question and st.button("Generate Analysis"):
         with st.spinner("Working on it..."):
             data_sample = df.head(10).to_csv(index=False)
@@ -77,6 +77,7 @@ if uploaded_file:
             )
 
         st.markdown("### Suggested Analysis & Code")
+        
         output_text = result.content if hasattr(result, "content") else result
         st.markdown(output_text if output_text else "*No response received from LLM*")
         st.session_state.generated_code = output_text
